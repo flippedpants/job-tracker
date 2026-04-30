@@ -13,7 +13,7 @@ import { chromium } from "playwright";
 //         return cards.slice(0,5).map(card => ({
 //             title: card.querySelector("h3 a")?.getAttribute("title") ?? "",
 //             price: card.querySelector(".price_color")?.textContent ?? "",
-//             // availability: card.querySelector(".product_price .instock")?.textContent.trim() ?? ""
+//            // availability: card.querySelector(".product_price .instock")?.textContent.trim() ?? ""
 //         }))
 //     })
 
