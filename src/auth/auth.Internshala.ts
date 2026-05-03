@@ -3,7 +3,7 @@ import { Page } from "playwright";
 export async function login(page: Page, email: string | undefined, password: string | undefined){
     await page.goto("https://internshala.com");
 
-    if (await page.locator("text=Hi, ").isVisible().catch(() => false)){
+    if(page.url().includes("/student/dashboard")){
         console.log("Already logged in");
         return;
     }
