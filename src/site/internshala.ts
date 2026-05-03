@@ -1,9 +1,10 @@
 import { Page } from "playwright";
+import { Detail, saveDetails } from "../config/db.internshala";
 
 export async function scrapeInternshala(page: Page) {
     await page.goto("https://internshala.com/student/applications?referral=header");
 
-    const internships: any[] = [];
+    const internships: Detail[] = [];
     const links: string[] = [];
     // await page.pause();
 
@@ -57,26 +58,27 @@ export async function scrapeInternshala(page: Page) {
         const container = page.locator("#details_container");
 
 
-        const domain = await container.locator(".heading_4_5.profile").textContent();
-        const company = await container.locator('.heading_6').first().locator("a").textContent();
-        const duration = await container.locator(".ic-16-calendar").first().locator("..").locator("..").locator(".item_body").textContent();
-        const location = await container.locator("#location_names").locator("a").textContent();
-        const stipend = await container.locator(".other_detail_item.stipend_container").locator(".item_body").locator("span").textContent();
-        const applicants = await container.locator(".applications_message").textContent();
+        const domain = await container.locator(".heading_4_5.profile").textContent() ?? "";
+        const company = await container.locator('.heading_6').first().locator("a").textContent() ?? "";
+        const duration = await container.locator(".ic-16-calendar").first().locator("..").locator("..").locator(".item_body").textContent() ?? "";
+        const location = await container.locator("#location_names").locator("a").textContent() ?? "";
+        const stipend = await container.locator(".other_detail_item.stipend_container").locator(".item_body").locator("span").textContent() ?? "";
+        const applicants = await container.locator(".applications_message").textContent() ?? "";
 
         const details = {
-            domain: domain?.trim(),
-            company: company?.trim(),
-            location: location?.trim(),
-            duration: duration?.trim(),
-            stipend: stipend?.replace("/month", "").trim(),
-            applicants: applicants?.replace("applicants", "").trim()
+            domain: domain.trim(),
+            company: company.trim(),
+            location: location.trim(),
+            duration: duration.trim(),
+            stipend: stipend.replace("/month", "").trim(),
+            applicants: applicants.replace("applicants", "").trim()
         }
 
         internships.push(details);
     }
 
     console.table(internships);
+    saveDetails(internships);
 }
 
 // URL changes?          → waitForURL
